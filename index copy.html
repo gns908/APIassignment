@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="shortcut icon" href="#" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./css/my_reset.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/main.js" defer></script>
+  </head>
+  <body>
+    <span class="test">test</span>
+    <div class="wrap">
+      <header>
+        <div class="inner">
+          <div>
+            <a href=""><i class="fa-solid fa-house"></i></a>
+          </div>
+          <div class="categoryArea">
+            <span>category : </span>
+            <div class="dropdown">
+              <button id="selectedOption" onclick="toggleDropdown(event)">
+                general
+              </button>
+              <div id="dropdown" class="dropdown-content">
+                <p onclick="selectOption('general')">general</p>
+                <p onclick="selectOption('business')">business</p>
+                <p onclick="selectOption('entertainment')">entertainment</p>
+                <p onclick="selectOption('health')">health</p>
+                <p onclick="selectOption('science')">science</p>
+                <p onclick="selectOption('sports')">sports</p>
+                <p onclick="selectOption('technology')">technology</p>
+              </div>
+            </div>
+          </div>
+          <div class="qArea">
+            <span>검색어 : </span
+            ><input
+              type="text"
+              class="qInput"
+              placeholder="미입력 시 검색어 필터 제외"
+            />
+          </div>
+          <div class="pageSizeArea">
+            <span>pageSize(1 ~ 100) : </span>
+            <input
+              class="pageSizeInput"
+              type="number"
+              onfocus="this.select()"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              onblur="if(value<1) value=1; if(value>100) value=100;"
+              value="10"
+            />
+          </div>
+          <div><button class="searchButton">검색</button></div>
+        </div>
+      </header>
+      <main>
+        <div class="inner">
+          <div class="summary">
+            <span>현재 상태 : ready</span>
+            <p>검색 조건을 설정한 후<br />검색 버튼을 눌러주세요.</p>
+          </div>
+          <div class="pagination">
+            <button
+              class="firstbutton"
+              onclick="pageButton(this.textContent, 'top')"
+              disabled
+            >
+              1
+            </button>
+            <button
+              class="prevbutton"
+              onclick="pageButton(this.textContent, 'top')"
+              disabled
+            >
+              0
+            </button>
+            <input
+              class="pageinput"
+              type="number"
+              onfocus="this.select()"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              onkeypress="if(event.keyCode == 13) { pageJump(this.value, 'top') }"
+              onblur="pageJump(this.value, 'top')"
+              value="1"
+            />
+            <button
+              class="nextbutton"
+              onclick="pageButton(this.textContent, 'top')"
+              disabled
+            >
+              2
+            </button>
+            <button
+              class="lastbutton"
+              onclick="pageButton(this.textContent, 'top')"
+              disabled
+            >
+              1
+            </button>
+          </div>
+          <div class="itemArea">
+            <ul class="items"></ul>
+          </div>
+          <div class="pagination">
+            <button
+              class="firstbutton"
+              onclick="pageButton(this.textContent, 'bottom')"
+              disabled
+            >
+              1
+            </button>
+            <button
+              class="prevbutton"
+              onclick="pageButton(this.textContent, 'bottom')"
+              disabled
+            >
+              0
+            </button>
+            <input
+              class="pageinput"
+              type="number"
+              onfocus="this.select()"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              onkeypress="if(event.keyCode == 13) { pageJump(this.value, 'bottom') }"
+              onblur="pageJump(this.value, 'bottom')"
+              value="1"
+            />
+            <button
+              class="nextbutton"
+              onclick="pageButton(this.textContent, 'bottom')"
+              disabled
+            >
+              2
+            </button>
+            <button
+              class="lastbutton"
+              onclick="pageButton(this.textContent, 'bottom')"
+              disabled
+            >
+              1
+            </button>
+          </div>
+        </div>
+      </main>
+      <footer>
+        <div class="inner">
+          <button onclick="Gototop()">위로 가기</button>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
