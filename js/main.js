@@ -41,6 +41,8 @@ let firstCallStatus = true;
 
 let Bottom = false;
 
+let TestMode = false;
+
 searchButton.addEventListener('click', () => {
   firstCall();
 });
@@ -58,7 +60,9 @@ async function firstCall() {
   targetURL.searchParams.append('pageSize', pageSize);
   targetURL.searchParams.append('page', '1');
   // targetURL.searchParams.append('page', '1');
+
   targetURL.searchParams.append('apiKey', '1feed83e7d584c02b087162156455bfc');
+  // targetURL.searchParams.append('apiKey', 'c3235c33e294408fbdbb2375586a17bb');
   // targetURL.searchParams.append('apiKey', '');
 
   firstCallStatus = true;
@@ -69,8 +73,14 @@ async function firstCall() {
 }
 
 async function fetchFunction() {
-  const response = await fetch(targetURL);
-  const data = await response.json();
+  let response = await fetch(targetURL);
+  let data = await response.json();
+
+  if (data.status == 'error') {
+    targetURL.searchParams.set('apiKey', 'c3235c33e294408fbdbb2375586a17bb');
+    response = await fetch(targetURL);
+    data = await response.json();
+  }
 
   let before = 0;
   let after = 0;
@@ -115,7 +125,7 @@ async function fetchFunction() {
       item.style.display = 'block';
     });
 
-    if (Bottom) {
+    if (Bottom && !TestMode) {
       after = pageinput[1].getBoundingClientRect().top;
       window.scrollBy(0, after - before);
     }
@@ -323,4 +333,27 @@ function disabledButton(button) {
 function Gototop() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
+}
+
+let keysPressed = {};
+
+document.addEventListener('keydown', (event) => {
+  keysPressed[event.key] = true;
+  if (keysPressed['t'] && keysPressed['e'] && keysPressed['s']) {
+    testToggle();
+  }
+});
+
+document.addEventListener('keyup', (event) => {
+  delete keysPressed[event.key];
+});
+
+function testToggle() {
+  if (TestMode) {
+    TestMode = false;
+    document.querySelector('.test').textContent = '';
+  } else {
+    TestMode = true;
+    document.querySelector('.test').textContent = 'TestMode';
+  }
 }
