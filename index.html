@@ -28,20 +28,15 @@
           <div class="inputArea">
             <div class="categoryArea">
               <span>category : </span>
-              <div class="dropdown">
-                <button id="selectedOption" onclick="toggleDropdown(event)">
-                  general
-                </button>
-                <div id="dropdown" class="dropdown-content">
-                  <p onclick="selectOption('general')">general</p>
-                  <p onclick="selectOption('business')">business</p>
-                  <p onclick="selectOption('entertainment')">entertainment</p>
-                  <p onclick="selectOption('health')">health</p>
-                  <p onclick="selectOption('science')">science</p>
-                  <p onclick="selectOption('sports')">sports</p>
-                  <p onclick="selectOption('technology')">technology</p>
-                </div>
-              </div>
+              <select class="dropdown">
+                <option value="general" selected>general</option>
+                <option value="business">business</option>
+                <option value="entertainment">entertainment</option>
+                <option value="health">health</option>
+                <option value="science">science</option>
+                <option value="sports">sports</option>
+                <option value="technology">technology</option>
+              </select>
             </div>
             <div class="qArea">
               <span>검색어 : </span
@@ -63,7 +58,9 @@
               />
             </div>
           </div>
-          <div><button class="searchButton">검색</button></div>
+          <div>
+            <button class="searchButton" onclick="firstCall()">검색</button>
+          </div>
         </div>
       </header>
       <main>
@@ -71,7 +68,7 @@
           <div class="summary">
             <span>현재 상태 : ready</span>
             <p class="inputStatus">
-              category : ready<br />q : ready<br />pageSize : ready
+              category : ready<br />검색어 : ready<br />pageSize : ready
             </p>
             <p class="message">검색 조건을 설정한 후 검색 버튼을 눌러주세요.</p>
           </div>

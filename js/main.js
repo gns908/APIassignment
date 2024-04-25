@@ -3,7 +3,6 @@ let targetURL = new URL('https://newsapi.org/v2/top-headlines?');
 const selectedOption = document.querySelector('#selectedOption');
 const qInput = document.querySelector('.qInput');
 const pageSizeInput = document.querySelector('.pageSizeInput');
-const searchButton = document.querySelector('.searchButton');
 const summarySpan = document.querySelector('main .summary span');
 const summaryinputStatus = document.querySelector('main .summary .inputStatus');
 const summarymessage = document.querySelector('main .summary .message');
@@ -18,6 +17,8 @@ const nextbutton = document.querySelectorAll('.nextbutton');
 const lastbutton = document.querySelectorAll('.lastbutton');
 
 const items = document.querySelector('.items');
+
+const dropdown = document.querySelector('.dropdown');
 
 const keys = [
   '1feed83e7d584c02b087162156455bfc',
@@ -43,12 +44,13 @@ let Bottom = false;
 
 let TestMode = false;
 
-searchButton.addEventListener('click', () => {
-  firstCall();
-});
+reset();
+
+function reset() {}
 
 async function firstCall() {
-  category = selectedOption.textContent;
+  category = dropdown.value;
+
   q = qInput.value;
   pageSize = pageSizeInput.value;
 
@@ -121,9 +123,9 @@ async function fetchFunction() {
 
   summaryinputStatus.innerHTML = `category : ${category}`;
   if (q === '') {
-    summaryinputStatus.innerHTML += `<br />q : 없음`;
+    summaryinputStatus.innerHTML += `<br />검색어 : 없음`;
   } else {
-    summaryinputStatus.innerHTML += `<br />q : ${q}`;
+    summaryinputStatus.innerHTML += `<br />검색어 : ${q}`;
   }
   summaryinputStatus.innerHTML += `<br />pageSize : ${pageSize}`;
 
@@ -189,29 +191,6 @@ function createHTML(item) {
   <a href="${item.url}" target="_blank"></a>
 </li>`;
 }
-
-document.getElementById('dropdown').style.display = 'none';
-document.getElementById('selectedOption').innerText = 'general';
-
-function toggleDropdown(event) {
-  event.stopPropagation();
-  var dropdownContent = document.getElementById('dropdown');
-  if (dropdownContent.style.display === 'none') {
-    dropdownContent.style.display = 'block';
-  } else {
-    dropdownContent.style.display = 'none';
-  }
-}
-
-function selectOption(value) {
-  document.getElementById('selectedOption').innerText = value;
-  document.getElementById('dropdown').style.display = 'none';
-}
-
-document.addEventListener('click', function (event) {
-  var dropdownContent = document.getElementById('dropdown');
-  dropdownContent.style.display = 'none';
-});
 
 async function pageJump(page, position) {
   if (page >= firstpage && page <= lastpage && page != currentpage) {
