@@ -28,6 +28,10 @@ header .inner > * {
   margin: 1rem 0;
 }
 
+.inputArea > * {
+  margin: 1rem 0;
+}
+
 .fa-house {
   margin-top: 1rem;
   font-size: 100px;
@@ -76,7 +80,6 @@ main .inner {
 
 main .summary {
   padding: 1rem 0;
-  /* padding-top: 1rem; */
   text-align: center;
 }
 
@@ -86,7 +89,6 @@ main .summary p {
 
 .pagination {
   text-align: center;
-  /* margin: 1rem 0; */
   margin-bottom: 1rem;
   display: none;
 }
@@ -160,4 +162,32 @@ main .summary p {
 footer .inner {
   padding: 1rem;
   text-align: center;
+}
+
+@media screen and (min-width: 576px) {
+  header .inner {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .searchButton {
+    height: 100%;
+  }
+
+  main .summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  main .summary span {
+    margin-top: 1rem;
+    padding-left: 1rem;
+  }
+
+  .message {
+    padding-right: 1rem;
+  }
 }

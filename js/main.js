@@ -5,16 +5,10 @@ const qInput = document.querySelector('.qInput');
 const pageSizeInput = document.querySelector('.pageSizeInput');
 const searchButton = document.querySelector('.searchButton');
 const summarySpan = document.querySelector('main .summary span');
-const summaryP = document.querySelector('main .summary p');
+const summaryinputStatus = document.querySelector('main .summary .inputStatus');
+const summarymessage = document.querySelector('main .summary .message');
 
-// const pagination = document.querySelector('.pagination');
 const pagination = document.querySelectorAll('.pagination');
-
-// const firstbutton = document.querySelector('.firstbutton');
-// const prevbutton = document.querySelector('.prevbutton');
-// const pageinput = document.querySelector('.pageinput');
-// const nextbutton = document.querySelector('.nextbutton');
-// const lastbutton = document.querySelector('.lastbutton');
 
 const firstbutton = document.querySelectorAll('.firstbutton');
 const prevbutton = document.querySelectorAll('.prevbutton');
@@ -23,6 +17,12 @@ const nextbutton = document.querySelectorAll('.nextbutton');
 const lastbutton = document.querySelectorAll('.lastbutton');
 
 const items = document.querySelector('.items');
+
+const keys = [
+  '1feed83e7d584c02b087162156455bfc',
+  'c3235c33e294408fbdbb2375586a17bb',
+  '',
+];
 
 let category;
 let q;
@@ -55,15 +55,10 @@ async function firstCall() {
   targetURL = new URL('https://newsapi.org/v2/top-headlines?');
   targetURL.searchParams.append('country', 'kr');
   targetURL.searchParams.append('category', category);
-  // targetURL.searchParams.append('sources', '');
   targetURL.searchParams.append('q', q);
   targetURL.searchParams.append('pageSize', pageSize);
   targetURL.searchParams.append('page', '1');
-  // targetURL.searchParams.append('page', '1');
-
-  targetURL.searchParams.append('apiKey', '1feed83e7d584c02b087162156455bfc');
-  // targetURL.searchParams.append('apiKey', 'c3235c33e294408fbdbb2375586a17bb');
-  // targetURL.searchParams.append('apiKey', '');
+  targetURL.searchParams.append('apiKey', '');
 
   firstCallStatus = true;
 
@@ -73,40 +68,75 @@ async function firstCall() {
 }
 
 async function fetchFunction() {
-  let response = await fetch(targetURL);
-  let data = await response.json();
+  let response;
+  let data;
 
-  if (data.status == 'error') {
-    targetURL.searchParams.set('apiKey', 'c3235c33e294408fbdbb2375586a17bb');
-    response = await fetch(targetURL);
-    data = await response.json();
+  outer: for (let i = 0; i < keys.length; i++) {
+    targetURL.searchParams.set('apiKey', keys[i]);
+
+    for (let j = 0; j < 3; j++) {
+      try {
+        response = await fetch(targetURL);
+
+        if (!response.ok) {
+          if (response.status === 400) {
+            throw new Error(
+              'The request was unacceptable, often due to a missing or misconfigured parameter.'
+            );
+          } else if (response.status === 401) {
+            throw new Error(
+              'Your API key was missing from the request, or wasnt correct.'
+            );
+          } else if (response.status === 429) {
+            throw new Error(
+              'You made too many requests within a window of time and have been rate limited. Back off for a while.'
+            );
+          } else if (response.status === 500) {
+            throw new Error('Something went wrong on our side.');
+          } else {
+            throw new Error('미정의 에러');
+          }
+        }
+
+        break outer;
+      } catch (error) {
+        console.error(
+          'There has been a problem with your fetch operation: ',
+          error
+        );
+        if (
+          response.status === 400 ||
+          response.status === 401 ||
+          response.status === 429
+        ) {
+          break;
+        }
+      }
+    }
   }
 
-  let before = 0;
-  let after = 0;
-
-  if (Bottom) {
-    before = pageinput[1].getBoundingClientRect().top;
-  }
+  data = await response.json();
 
   summarySpan.innerText = `현재 상태 : ${data.status}`;
 
-  summaryP.innerHTML = `category : ${category}`;
+  summaryinputStatus.innerHTML = `category : ${category}`;
   if (q === '') {
-    summaryP.innerHTML += `<br />q : 없음`;
+    summaryinputStatus.innerHTML += `<br />q : 없음`;
   } else {
-    summaryP.innerHTML += `<br />q : ${q}`;
+    summaryinputStatus.innerHTML += `<br />q : ${q}`;
   }
-  summaryP.innerHTML += `<br />pageSize : ${pageSize}`;
+  summaryinputStatus.innerHTML += `<br />pageSize : ${pageSize}`;
+
+  summarymessage.innerHTML = '';
 
   if (data.status === 'error') {
-    summaryP.innerHTML += `<br /><br />${data.message}`;
+    summarymessage.innerHTML += `${data.message}`;
     items.innerHTML = '';
     pagination.forEach((item) => {
       item.style.display = 'none';
     });
   } else if (data.totalResults === 0) {
-    summaryP.innerHTML += `<br /><br />검색 조건에 맞는 기사가 없습니다.`;
+    summarymessage.innerHTML += `검색 조건에 맞는 기사가 없습니다.`;
     items.innerHTML = '';
     pagination.forEach((item) => {
       item.style.display = 'none';
@@ -114,7 +144,7 @@ async function fetchFunction() {
   } else {
     totalResults = data.totalResults;
 
-    summaryP.innerHTML += `<br /><br />${totalResults}건의 기사가 검색되었습니다.<br />기사를 클릭 시 출처가 새 탭에서 열립니다.`;
+    summarymessage.innerHTML += `${totalResults}건의 기사가 검색되었습니다.<br />기사를 클릭 시 출처가 새 탭에서 열립니다.`;
 
     items.innerHTML = data.articles
       .map((item) => {
@@ -125,10 +155,7 @@ async function fetchFunction() {
       item.style.display = 'block';
     });
 
-    if (Bottom && !TestMode) {
-      after = pageinput[1].getBoundingClientRect().top;
-      window.scrollBy(0, after - before);
-    }
+    document.querySelector('.summary').scrollIntoView({ behavior: 'smooth' });
 
     if (firstCallStatus) {
       firstpageopen();
@@ -238,29 +265,13 @@ function firstpageopen() {
   nextpage = 2;
   lastpage = Math.ceil(totalResults / pageSize);
 
-  // firstbutton.forEach((item) => {
-  //   item.textContent = `${firstpage}`;
-  // });
-
-  // prevbutton.forEach((item) => {
-  //   item.textContent = `${prevpage}`;
-  // });
-
   pageinput.forEach((item) => {
     item.value = currentpage;
   });
 
-  // nextbutton.forEach((item) => {
-  //   item.textContent = `${nextpage}`;
-  // });
-
-  // lastbutton.forEach((item) => {
-  //   item.textContent = `${lastpage}`;
-  // });
-
   disabledButton(firstbutton);
   disabledButton(prevbutton);
-  // pageinput
+
   if (nextpage <= lastpage) {
     enabledButton(nextbutton);
   } else {
@@ -274,26 +285,13 @@ function firstpageopen() {
 }
 
 function pageChange() {
-  // firstpage = 1;
   prevpage = currentpage - 1;
-  // currentpage = 1;
-  nextpage = Number(currentpage) + 1;
-  // lastpage = Math.ceil(totalResults / pageSize);
 
-  // firstbutton.textContent = `${firstpage}`;
-  // prevbutton.textContent = `${prevpage}`;
-  // prevbutton.forEach((item) => {
-  //   item.textContent = `${prevpage}`;
-  // });
-  // pageinput.value = `${currentpage}`;
+  nextpage = Number(currentpage) + 1;
+
   pageinput.forEach((item) => {
     item.value = currentpage;
   });
-  // nextbutton.textContent = `${nextpage}`;
-  // nextbutton.forEach((item) => {
-  //   item.textContent = `${nextpage}`;
-  // });
-  // lastbutton.textContent = `${lastpage}`;
 
   if (currentpage != firstpage) {
     enabledButton(firstbutton);
@@ -305,7 +303,7 @@ function pageChange() {
   } else {
     disabledButton(prevbutton);
   }
-  // pageinput
+
   if (currentpage != nextpage && nextpage <= lastpage) {
     enabledButton(nextbutton);
   } else {

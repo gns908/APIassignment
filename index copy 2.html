@@ -25,43 +25,41 @@
           <div>
             <a href=""><i class="fa-solid fa-house"></i></a>
           </div>
-          <div class="inputArea">
-            <div class="categoryArea">
-              <span>category : </span>
-              <div class="dropdown">
-                <button id="selectedOption" onclick="toggleDropdown(event)">
-                  general
-                </button>
-                <div id="dropdown" class="dropdown-content">
-                  <p onclick="selectOption('general')">general</p>
-                  <p onclick="selectOption('business')">business</p>
-                  <p onclick="selectOption('entertainment')">entertainment</p>
-                  <p onclick="selectOption('health')">health</p>
-                  <p onclick="selectOption('science')">science</p>
-                  <p onclick="selectOption('sports')">sports</p>
-                  <p onclick="selectOption('technology')">technology</p>
-                </div>
+          <div class="categoryArea">
+            <span>category : </span>
+            <div class="dropdown">
+              <button id="selectedOption" onclick="toggleDropdown(event)">
+                general
+              </button>
+              <div id="dropdown" class="dropdown-content">
+                <p onclick="selectOption('general')">general</p>
+                <p onclick="selectOption('business')">business</p>
+                <p onclick="selectOption('entertainment')">entertainment</p>
+                <p onclick="selectOption('health')">health</p>
+                <p onclick="selectOption('science')">science</p>
+                <p onclick="selectOption('sports')">sports</p>
+                <p onclick="selectOption('technology')">technology</p>
               </div>
             </div>
-            <div class="qArea">
-              <span>검색어 : </span
-              ><input
-                type="text"
-                class="qInput"
-                placeholder="미입력 시 검색어 필터 제외"
-              />
-            </div>
-            <div class="pageSizeArea">
-              <span>pageSize(1 ~ 100) : </span>
-              <input
-                class="pageSizeInput"
-                type="number"
-                onfocus="this.select()"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                onblur="if(value<1) value=1; if(value>100) value=100;"
-                value="10"
-              />
-            </div>
+          </div>
+          <div class="qArea">
+            <span>검색어 : </span
+            ><input
+              type="text"
+              class="qInput"
+              placeholder="미입력 시 검색어 필터 제외"
+            />
+          </div>
+          <div class="pageSizeArea">
+            <span>pageSize(1 ~ 100) : </span>
+            <input
+              class="pageSizeInput"
+              type="number"
+              onfocus="this.select()"
+              oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              onblur="if(value<1) value=1; if(value>100) value=100;"
+              value="10"
+            />
           </div>
           <div><button class="searchButton">검색</button></div>
         </div>
@@ -70,10 +68,7 @@
         <div class="inner">
           <div class="summary">
             <span>현재 상태 : ready</span>
-            <p class="inputStatus">
-              category : ready<br />q : ready<br />pageSize : ready
-            </p>
-            <p class="message">검색 조건을 설정한 후 검색 버튼을 눌러주세요.</p>
+            <p>검색 조건을 설정한 후 검색 버튼을 눌러주세요.</p>
           </div>
           <div class="pagination">
             <button
