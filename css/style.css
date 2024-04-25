@@ -101,6 +101,11 @@ main .summary p {
   width: 30px;
   text-align: center;
 }
+.pagination .pageinput::-webkit-inner-spin-button,
+.pagination .pageinput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 .items {
   display: grid;

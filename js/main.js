@@ -9,6 +9,7 @@ const summaryinputStatus = document.querySelector('main .summary .inputStatus');
 const summarymessage = document.querySelector('main .summary .message');
 
 const pagination = document.querySelectorAll('.pagination');
+const maxPage = document.querySelectorAll('.pagination span');
 
 const firstbutton = document.querySelectorAll('.firstbutton');
 const prevbutton = document.querySelectorAll('.prevbutton');
@@ -21,7 +22,6 @@ const items = document.querySelector('.items');
 const keys = [
   '1feed83e7d584c02b087162156455bfc',
   'c3235c33e294408fbdbb2375586a17bb',
-  '',
 ];
 
 let category;
@@ -228,6 +228,9 @@ async function pageJump(page, position) {
     pageinput.forEach((item) => {
       item.value = currentpage;
     });
+    maxPage.forEach((item) => {
+      item.textContent = lastpage;
+    });
   }
 }
 
@@ -268,6 +271,9 @@ function firstpageopen() {
   pageinput.forEach((item) => {
     item.value = currentpage;
   });
+  maxPage.forEach((item) => {
+    item.textContent = lastpage;
+  });
 
   disabledButton(firstbutton);
   disabledButton(prevbutton);
@@ -291,6 +297,9 @@ function pageChange() {
 
   pageinput.forEach((item) => {
     item.value = currentpage;
+  });
+  maxPage.forEach((item) => {
+    item.textContent = lastpage;
   });
 
   if (currentpage != firstpage) {
