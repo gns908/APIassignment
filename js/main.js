@@ -321,6 +321,8 @@ function Gototop() {
   document.documentElement.scrollTop = 0;
 }
 
+document.querySelector('.test').textContent = '';
+
 let keysPressed = {};
 
 document.addEventListener('keydown', (event) => {
